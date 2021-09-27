@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
+/* To Do
+  -Allow for searchable stocks
+  -Make title change based off what stock is searched
+*/
+
 const SearchBar = () => (
     <form action="/" method="get">
         <label htmlFor="header-search">
