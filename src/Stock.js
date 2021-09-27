@@ -20,7 +20,12 @@ function Stock() {
   const [stockChartXValues, setXValue] = useState([]);
   const [stockChartYValues, setYValue] = useState([]);
   const [jsonData, setData] = useState([]);
-
+  let x = [];
+  let close = [];
+  let high = [];
+  let low = [];
+  let open = [];
+  let trace = {};
   useEffect(() => {
     function fetchStock() {
       const API_KEY = 'HGJWFG4N8AQ66ICD';
@@ -41,6 +46,28 @@ function Stock() {
     }
     fetchStock();
   }, [])
+  
+  for(var key in jsonData){
+    x.unshift(key);
+    open.unshift(jsonData[key]['1. open']);
+    high.unshift(jsonData[key]['2. high']);
+    low.unshift(jsonData[key]['3. low']);
+    close.unshift(jsonData[key]['4. close']);
+  }
+
+  trace = {
+    x: x,
+    close: close,
+    decreasing: {line: {color: '#7F7F7F'}}, 
+    high: high,
+    increasing: {line: {color: '#17BECF'}}, 
+    line: {color: 'rgba(31,119,180,1)'}, 
+    low: low,
+    open: open, 
+    type: 'candlestick', 
+    xaxis: 'x', 
+    yaxis: 'y'
+  };
 
   console.log(jsonData);
 
@@ -48,14 +75,16 @@ function Stock() {
       <div>
         <h1>Stock Market</h1>
         <SearchBar />
+        
         <Plot
           data={[
             {
-              x: {stockChartXValues},
-              y: {stockChartYValues},
               type: 'candlestick',
-              mode: 'lines+markers',
-              marker: {color: 'red'},
+              x: x,
+              open: open,
+              high: high,
+              low: low,
+              close: close
             }
           ]}
           layout={{width: 1000, height: 500, title: 'FB'}}
