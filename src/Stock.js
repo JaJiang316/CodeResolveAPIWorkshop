@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 
-/* To Do
-  -Allow for searchable stocks
-  -Make title change based off what stock is searched
-*/
+
+function SearchBar(props) {
+  return(
+    <form method="get">
+      <label htmlFor="header-search">
+        <span className="visually-hidden">Search a Stock </span>
+      </label>
+      <input
+        type="text"
+        id="header-search"
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            props.searchStock(e.target.value);
+          }
+        }}
+        placeholder="TSLA"
+      />
+      <button type="button" onClick={props.handlingSubmit}>Search</button>
+    </form>
+  )
+}
 
 function Stock() {
   const [jsonData, setData] = useState([]);
@@ -15,37 +32,38 @@ function Stock() {
   let low = [];
   let open = [];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     setSearch(document.getElementById("header-search").value);
   };
 
-  const SearchBar = () => (
-    <form method="get">
-      <label htmlFor="header-search">
-        <span className="visually-hidden">Search a Stock </span>
-      </label>
-      <input
-        type="text"
-        id="header-search"
-        onKeyDown={(e) => {
-          if (e.keyCode === 13) {
-            setSearch(e.target.value);
-          }
-        }}
-        placeholder="TSLA"
-      />
-      <button type="button" value={search} onClick={handleSubmit}>Search</button>
-    </form>
-  );
+  // const SearchBar = () => (
+  //   <form method="get">
+  //     <label htmlFor="header-search">
+  //       <span className="visually-hidden">Search a Stock </span>
+  //     </label>
+  //     <input
+  //       type="text"
+  //       id="header-search"
+  //       onKeyDown={(e) => {
+  //         if (e.keyCode === 13) {
+  //           setSearch(e.target.value);
+  //         }
+  //       }}
+  //       placeholder="TSLA"
+  //     />
+  //     <button type="button" onClick={handleSubmit}>Search</button>
+  //   </form>
+  // );
 
   useEffect(() => {
     const API_KEY = "HGJWFG4N8AQ66ICD";
     let StockSymbol = search;
+    // console.log(StockSymbol);
     let API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${StockSymbol}&outputsize=compact&apikey=${API_KEY}`;
     fetch(API_Call)
-      .then(function (response) {
-        return response.json();
-      })
+      .then((response) =>
+        response.json()
+      )
       .then((data) => {
         // console.log(data);
         setData(data["Time Series (Daily)"]);
@@ -64,7 +82,7 @@ function Stock() {
   return (
     <div>
       <h1>Stock Market</h1>
-      <SearchBar />
+      <SearchBar handlingSubmit={handleSubmit} searchStock = {setSearch}/>
       <Plot
         data={[
           {
@@ -76,7 +94,7 @@ function Stock() {
             close: close
           }
         ]}
-        layout={{ width: 1500, height: 1000, title: search }}
+        layout={{ width: 1500, height: 1000, title: search}}
       />
     </div>
   );
