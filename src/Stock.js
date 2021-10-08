@@ -36,6 +36,26 @@ function Stock() {
     setSearch(document.getElementById("header-search").value);
   };
 
+  //Irrelevant Code
+  // const SearchBar = () => (
+  //   <form method="get">
+  //     <label htmlFor="header-search">
+  //       <span className="visually-hidden">Search a Stock </span>
+  //     </label>
+  //     <input
+  //       type="text"
+  //       id="header-search"
+  //       onKeyDown={(e) => {
+  //         if (e.keyCode === 13) {
+  //           setSearch(e.target.value);
+  //         }
+  //       }}
+  //       placeholder="TSLA"
+  //     />
+  //     <button type="button" onClick={handleSubmit}>Search</button>
+  //   </form>
+  // );
+
   useEffect(() => {
     const API_KEY = "HGJWFG4N8AQ66ICD";
     let StockSymbol = search;
@@ -58,6 +78,7 @@ function Stock() {
     low.push(jsonData[date]["3. low"]);
     close.push(jsonData[date]["4. close"]);
   } 
+
   console.log(jsonData); 
 
   return (
