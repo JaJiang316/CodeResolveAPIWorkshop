@@ -13,6 +13,7 @@ function SearchBar(props) {
         id="header-search"
         onKeyDown={(e) => {
           if (e.keyCode === 13) {
+            e.preventDefault();
             props.searchStock(e.target.value);
           }
         }}
@@ -59,7 +60,7 @@ function Stock() {
   useEffect(() => {
     const API_KEY = "HGJWFG4N8AQ66ICD";
     let StockSymbol = search;
-    // console.log(StockSymbol);
+    console.log(StockSymbol);
     let API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${StockSymbol}&outputsize=compact&apikey=${API_KEY}`;
     fetch(API_Call)
       .then((response) =>
